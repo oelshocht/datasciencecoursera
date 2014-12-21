@@ -1,10 +1,10 @@
-readdata <- function(dir = ".") {
-    if (!(dir %in% c("training", "test"))) {
+readdata <- function(set = ".") {
+    if (!(set %in% c("train", "test"))) {
         stop("invalid set")
     }
 
     # read the data set
-    df <- read.table(paste(dir, "/X_test.txt", sep=""))
+    df <- read.table(paste(set, "/X_", set, ".txt", sep=""))
 
     # read the feature names
     features <- read.table("features.txt", sep=" ")
@@ -13,7 +13,7 @@ readdata <- function(dir = ".") {
     names(df) <- features$V2
 
     # read the activity labels
-    labels <- read.table(paste(dir, "/Y_test.txt", sep=""))
+    labels <- read.table(paste(set, "/Y_", set, ".txt", sep=""))
 
     # read the activity label names
     activities <- read.table("activity_labels.txt", sep=" ")
@@ -23,7 +23,11 @@ readdata <- function(dir = ".") {
 }
 
 test <- readdata("test")
-training <- readdata("training")
+training <- readdata("train")
 
-# read activity labels
+# merge datasets
+result <- rbind(test, training)
+
+# write result back to file
+write.table(result, file="result.txt")
 
