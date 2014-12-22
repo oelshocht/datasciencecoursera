@@ -28,9 +28,14 @@ readdata <- function(set = ".") {
     # set the activity labels column name
     names(labels) <- c("activity")
 
+    # read the subjects
+    subjects <- read.table(paste(set, "/subject_", set, ".txt", sep=""))
 
-    # merge features and activity
-    df <- cbind(labels, df)
+    # set the subject column name
+    names(subjects) <- "subject"
+
+    # merge all columns
+    df <- cbind(subjects, labels, df)
 }
 
 test <- readdata("test")
@@ -40,7 +45,7 @@ training <- readdata("train")
 result <- rbind(test, training)
 
 # keep only measurements for mean and standard deviation
-result <- result[,grep("(activity)(mean)|(std)",names(result))]
+result <- result[,grep("(subject)|(activity)|(mean)|(std)",names(result))]
 
 # write result back to file
 write.table(result, file="result.txt", row.names=FALSE)
