@@ -12,11 +12,22 @@ readdata <- function(set = ".") {
     # set the column feature names
     names(df) <- features$V2
 
+
     # read the activity labels
     labels <- read.table(paste(set, "/Y_", set, ".txt", sep=""))
 
+    # convert the activity labels into a factor
+    labels$V1 <- factor(labels$V1)
+
     # read the activity label names
     activities <- read.table("activity_labels.txt", sep=" ")
+
+    # set the activity label names
+    levels(labels$V1) <- activities$V2
+
+    # set the activity labels column name
+    names(labels) <- c("activity")
+
 
     # merge features and activity
     df <- cbind(labels, df)
@@ -28,6 +39,8 @@ training <- readdata("train")
 # merge datasets
 result <- rbind(test, training)
 
-# write result back to file
-write.table(result, file="result.txt")
+# keep only measurements for mean and standard deviation
+result <- result[,grep("(activity)(mean)|(std)",names(result))]
 
+# write result back to file
+write.table(result, file="result.txt", row.names=FALSE)
