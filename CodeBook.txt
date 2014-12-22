@@ -1,0 +1,11 @@
+CodeBook
+========
+
+The resulting database is constructed from the Samsung data by merging the
+training and test set, and merging in the subjects and activity labels.
+
+The first 2 columns indicate
+- the id of the subject for the observation
+- the name of the activity as manually observed
+
+Other columns are the mean and standard deviation for all measurements.
